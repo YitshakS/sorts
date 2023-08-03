@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<!--Clean all inlinestyles
+Close all open HTML tags-->
+<html>
+    <!--<html lang="he">-->
+<head>
+	<title>מיונים</title>
+	<!-- קידוד טקסט -->
+	<meta charset="utf-8">
+
+	<!-- CSS עיצוביי -->
+	<link rel="stylesheet" type="text/css" href="styles.css">
+
+	<!--  JavaScript סקריפטים ב -->
+	<script src="scripts.js"></script>
+	<script src="CurveAnimatorNew.js"></script>
+</head>
+
+<body>
+	<table class="menuTable">
+		<tr>
+			<td valign="top" class="tdFieldset1">
+				<fieldset id="fieldset1">
+					<legend>מאפייני מערך:</legend>
+					<table>
+						<tr>
+							<td>צבע רקע תאי המערך</td>
+							<td><input type="color" value="#64dbcc" id="inputsColor1" class="width40"></td>
+							<td>&emsp;צבע גבול שני תאים שמושווים</td>
+							<td><input type="color" value="#ff0000" id="inputsColor3" class="width40"></td>
+						</tr>
+						<tr>
+							<td>צבע גופן תאי המערך</td>
+							<td><input type="color" value="#000000" id="inputsColor2" class="width40"></td>
+							<td>&emsp;צבע החץ</td>
+							<td><input type="color" value="#00FF00" id="inputsColor4" class="width40"></td>
+					<!--	<td>&emsp;צבע גבול תת מערך שמופעלת עליו רקורסיה</td>
+							<td><input type="color" value="#008000" id="inputsColor4" class="width40"></td>	-->
+						</tr>
+						<tr>
+							<td>
+								<br/>
+								<input class="marginRight0" type="radio" name="values" id="manually">הזנת ערכים ידנית
+							</td>
+							<td>
+							</td>
+							<td><br/>&emsp;מספר איברי המערך</td>
+							<td><br/><input type="number" value="10" min="5" max="20" id="inputsNum" class="directionLtr width40"></td>
+						</tr>
+						<tr>
+							<td>
+								<input class="marginRight0" type="radio" name="values" id="random" checked="checked">הגרלת ערכים
+							</td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>ספרות אחרי הנקודה</td>
+							<td><input type="number" id="point" class="directionLtr width40" value="0" min="0"></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>ערך מינימלי</td>
+							<td><input type="number" id="min" class="directionLtr width40" value="1"></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>ערך מקסימלי</td>
+							<td><input type="number" id="max" class="directionLtr width40" value="10"></td>
+							<td></td>
+							<td><button type="button" id="btnCreateArray" class="button aqua"><div class="glare"></div>צור מערך</button></td>
+							<!--
+				input.style.width = document.getElementById("inputsWidth").value.toString() + "px"; // רוחב התא
+				<td>&emsp;רוחב כל איבר בפיקסלים</td>
+				<td><input type="number" value="40" min="5" max="20" id="inputsWidth" class="directionLtr width40"></td>
+		-->
+						</tr>
+					</table>
+				</fieldset>
+			</td>
+			<td valign="top" class="tdFieldset2">
+				<!-- td -->
+				<fieldset id="fieldset2" disabled>
+					<legend>מאפייני מיון:</legend>
+					שם המיון
+					<select id="selectSort">
+						<option value="bubble" selected="selected">Bubble - בועות/החלפה</option>
+						<option value="selection">Selection - בחירה</option>
+						<option value="insertion">Insertion - הכנסה</option>
+						<option value="merge">Merge - מיזוג</option>
+						<option value="quick">Quick - מהיר</option>
+						<option value="all">כל המיונים</option>
+					</select>
+					<!--
+			<td><input type="radio" name="speed" checked="checked">מהירות קבועה
+			<td valign="top"><input type="radio" name="speed">צעד אחר צעד</td>
+		-->
+					&emsp;לאט<input type="range" class="verticalAlignMiddle" id="speed">מהר &emsp;
+					<button type="button" id="btnSort" class="button"><div class="glare"></div>מיין</button>
+					<br/><br/>תאור:
+					<div id="bubbleExplanation" class="fadeIn">
+						<ul>
+							<li>משווים כל איבר עם האיבר הבא אחריו. אם מוצאים איבר שגדול מהבא אחריו מחליפים ביניהם</li>
+							<li>כל איטרציה דוחפת קדימה למקומו את האיבר הכי גדול ויוצרת מיון מהסוף</li>
+							<li>לכן בכל איטרציה נתחיל מהאיבר הראשון עד האיבר במקום האחד לפני האיבר האחרון שדחפנו באיטרציה הקודמת (יסומן בחץ)</li>
+							<li>חוזרים על התהליך עד שבאיטרציה שלמה לא נמצאים שני איברים שאחד מהם גדול מהבא אחריו</li>
+						</ul>
+					</div>
+					<div id="selectionExplanation" class="displayNone">
+						<ul>
+							<li>מחפשים מהאיבר הראשון עד האחרון את האיבר הקטן ביותר ומחליפים אותו עם האיבר הראשון</li>
+							<li>מחפשים מהאיבר השני עד האחרון את האיבר הקטן ביותר ומחליפים אותו עם האיבר השני</li>
+							<li>ממשיכים באותה השיטה עד סוף המערך</li>
+							<li>כל איטרציה דוחפת אחורה למקומו את האיבר הכי קטן ויוצרת מיון מההתחלה</li>
+							<li>לכן בכל איטרציה נתחיל מהאיבר במקום האחד אחרי המקום שממנו התחלנו לבדוק בפעם הקודמת (יסומן בחץ)</li>
+						</ul>
+					</div>
+					<div id="insertionExplanation" class="displayNone">
+						<ul>
+							<li>לוקחים את האיבר השני, סורקים אחורה עד שנתקלים באיבר קטן או שווה לו, דוחפים מקום אחד קדימה את כל האיברים שנסרקו ומכניסים אותו לפניהם</li>
+							<li>לוקחים את האיבר השלישי, סורקים אחורה עד שנתקלים באיבר קטן או שווה לו, דוחפים מקום אחד קדימה את כל האיברים שנסרקו ומכניסים אותו לפניהם</li>
+							<li>ממשיכים באותה השיטה עד סוף המערך</li>
+							<li>כל איטרציה דוחפת אחורה למקומו את האיבר שנלקח ויוצרת מיון מההתחלה</li>
+							<li>לכן בכל איטרציה נקח את האיבר במקום האחד אחרי המקום שממנו לקחנו בפעם הקודמת (יסומן בחץ) ולכן סורקים אחורה רק עד שנתקלים באיבר קטן או שווה</li>
+							<li>(אם האיבר שלקחנו קטן מכל אלה שלפניו, הסריקה תגיע עד תחילת המערך, כולם יודחפו והוא יוכנס לפניהם)</li>
+							<li>ניתן לשפר את הסריקה ולבצעה בעזרת חיפוש בינארי, אך בגלל הדחיפות סיבוכיות המיון תשאר כפי שהיא</li>
+						</ul>
+					</div>
+					<div id="mergeExplanation" class="displayNone">
+						<ul>
+							<li>ניתן למזג שני מערכים שכל אחד מהם ממוין, למערך אחד ממוין, באופן הבא: כל עוד יש שני מערכים, נשווה בין שני האיברים הראשונים שלהם, נסיר את הקטן מביניהם ונוסיפו למערך הממוזג (אם שני האיברים הראשונים שווים נסיר את שניהם ונוסיפם למערך הממוזג). אם המערכים לא באותו האורך, כשישאר רק מערך אחד, נסירו ונוסיפו למערך הממוזג</li>
+							<br/>
+							<li>מחלקים כל מערך בחצי (במקרה שכמות התאים אי זוגית צד אחד יכלול תא אחד יותר)</li>
+							<li>חוזרים על התהליך ברקורסיה. תנאי עצירה הוא כשלא ניתן לחלק תת מערך כי הוא מכיל רק איבר אחד (איבר אחד הוא ממוין)</li>
+							<li>בנסיגה לאחור של הרקורסיות, ממזגים כל שני חצאים שחילקנו</li>
+							<li>בניגוד למיונים הלא רקורסיביים, בהם דאגנו להכניס כל איבר למקומו מבלי להתחשב בהזזות מיותרות של איברים אחרים, במיון זה אנו מנסים להתחשב בכל הזזה של כל איבר, לקרב אותו כמה שיותר למקומו ובכך לחסוך הזזות והשוואות מיותרות</li>
+						</ul>
+					</div>
+					<div id="quickExplanation" class="displayNone">
+						<ul>
+							<li>בוחרים איבר אקראי (מכונה "pivot" ובעברית "ציר")</li>
+							<li>מעבירים את כל האיברים הקטנים ממנו לפניו והגדולים ממנו לאחריו (מבלי למיין ביניהם)</li>
+							<li>חוזרים על הפעולה הנ"ל באופן רקורסיבי על תת המערך הכולל רק את האיברים שהעברנו כעת לפניו וכן באופן רקורסיבי על תת המערך הכולל רק את האיברים שהעברנו כעת לאחריו</li>
+							<li>תנאי עצירה הוא כשלא ניתן לחלק תת מערך כי הוא מכיל רק איבר אחד (איבר אחד הוא ממוין). המיון יסתיים כשלא ניתן לחלק עוד אף מערך</li>
+							<li>כל איטרציה תביא את איבר הציר למקומו (יסומן בחץ), אך בניגוד למיונים הלא רקורסיביים, במיון זה אנו לוקחים בחשבון גם את ההזזות של שאר האיברים שבאותה האיטרציה, כך שיקרבו אותם למקומותיהם ובכך לחסוך מהלכים מיותרים בהמשך</li>
+						</ul>
+					</div>
+					<div id="allExplanation" class="displayNone">
+					</div>
+				</fieldset>
+			</td>
+		</tr>
+	</table>
+	<br/>
+	<button type="button" id="btnReload" class="button aqua"><div class="glare"></div>נקה נתונים</button>
+	<div id="startExplanation" class="fadeIn">
+		<br/>
+		<b>הסבר כללי</b>
+		<ul>
+			<li>לכל אחד מאלגוריתמי (שיטות) המיון קיימים שמות שונים (לדוגמא "מיון בועות" נקרא גם "מיון החלפה"), מימושים שונים (למשל באמצעות איטרציה, רקורסיה, מחסנית, תור, רשימה מקושרת, עץ בינארי וכו'), וגרסאות שונות (לדוגמא ל"מיון בועות" ישנן גרסאות כגון "מיון שייקר", "מיון מסרק"). כדי לפשט את הדברים, השתדלנו להתמקד בשמות, במימושים ובגירסאות הבסיסיים.</li>
+			<li>נוהגים למדוד סיבוכיות (יעילות) של מיונים, כדי לאפשר השוואה ביניהם.</li>
+			<li>יעילות יכולה להתבטא בכמות הזיכרון הנדרשת ובמהירות. המיונים האיטרטיביים דורשים פחות זיכרון אך הרקורסיביים יותר מהירים. במיונים נוטים לייחס את היעילות למהירות, ולכן נעדיף את הרקורסיביים. עם זאת, במערכים קטנים, המכילים בערך 10 איברים ומטה, הרקורסיביים איטיים יותר, לכן לקבלת אופטימיזציה (יעילות מרבית), במערכים קטנים הם יעברו לבצע מיון הכנסה.</li>
+			<li>נוהגים למדוד את הסיבוכיות של מיונים ע"פ הכמות המינימלית של פעולות שהם נדרשים לבצע, בכדי למיין קלט של מספרים, בהנחה שהפעולות הם המרכיב העיקרי של המהירות.</li>
+			<li>המדד ע"פ כמות ההשוואות וההחלפות אינו מדוייק, מאחר שמלבד הפעולות הללו, המיונים מבצעים פעולות רבות נוספות. אך הפעולות הנוספות, כמו השיפורים בין גירסאות שונות של אותו מיון, נחשבים "זניחים". סיבוכיות באה למדוד סדר גודל (הערכה) של יעלות ולא מדידה מדויקת.</li>
+			<li>נוהגים לחלק את הסיבוכיות של כל מיון ל 3 מקרים. הטוב ביותר, הממוצע והגרוע ביותר. (במיון בועות למשל, המקרה הגרוע ביותר הוא, שלפני המיון המספרים ממוינים בסדר הפוך. במקרה זה המיון יאלץ לבצע הכי הרבה פעולות. המקרה הטוב ביותר הוא, שלפני המיון המספרים כבר ממוינים בסדר הנכון. במקרה זה המיון יעצר אחרי האיטרציה הראשונה). אם זאת, הנטיה כמובן לייחס את החשיבות הגדולה ביותר למקרה הממוצע, שבו המספרים מסודרים בסדר אקראי. (במיון בועות למשל, מספיק שמספר קטן יחסית לשאר המספרים, יופיע לקראת סופם, בכדי לגרום צורך פעולות רבות עד להשלמת המיון, גם אם שאר המספרים מסודרים יחסית. מקרה זה נפוץ ולכן המיון הזה נחשב לגרוע ביותר).</li>
+			<li>יהי n הוא מספר האיברים שיש למיין. על אף הגרסאות והמימושים השונים, מייחסים למיונים בועות, בחירה והכנסה, על אף פשטותם האיטרטיבית, סיבוכיות ממוצעת של (O(n², ולמיונים הרקורסיביים מיזוג ומהיר, על אף מורכבותם הרקורסיבית, סיבוכיות ממוצעת של (O(n log n.</li>
+			<li>גם אם נצליח לשפר את הסיבוכיות בחצי, היא תחשב לאותה סיבוכיות (O(n²) = O(n²½, כי כאמור, סיבוכיות היא סדר גודל של וקבוע שמכפיל סיבוכיות נחשב זניח. אם זאת, כמובן שישנה משמעות לכל שיפור, בעיקר במיונים הרקורסיביים.</li>
+			<li>מיון מהיר נקרא בשמו, משום שהוא נחשב למהיר ביותר הידוע כיום.</li>
+		</ul>
+		<b>ביבליוגרפיה (רשימת מקורות בהם נעשה שימוש במדריך זה):</b>
+		<ul>
+			<li>אלגוריתם מיון Bubble (בועות/החלפה): <a href="https://en.wikipedia.org/wiki/Bubble_sort#Optimizing_bubble_sort" target="_blank">https://en.wikipedia.org/wiki/Bubble_sort#Optimizing_bubble_sort</a></li>
+			<li>אלגוריתם מיון Selection (בחירה): <a href="https://en.wikipedia.org/wiki/Selection_sort#Implementation" target="_blank">https://en.wikipedia.org/wiki/Selection_sort#Implementation</a></li>
+			<li>אלגוריתם מיון Insertion (הכנסה): <a href="https://en.wikipedia.org/wiki/Insertion_sort#cite_ref-pearls_2-1" target="_blank">https://en.wikipedia.org/wiki/Insertion_sort#cite_ref-pearls_2-1</a></li>
+			<li>אלגוריתם מיון Merge (מיזוג): <a href="https://github.com/liuxinyu95/AlgoXY/blob/algoxy/sorting/merge-sort/src/mergesort.c" target="_blank">https://github.com/liuxinyu95/AlgoXY/blob/algoxy/sorting/merge-sort/src/mergesort.c</a> הסבר: <a href="https://stackoverflow.com/a/15657134" target="_blank">https://stackoverflow.com/a/15657134</a></li>
+			<li>אלגוריתם מיון Quick (מהיר): <a href="https://en.wikipedia.org/wiki/Quicksort#Hoare_partition_scheme" target="_blank">https://en.wikipedia.org/wiki/Quicksort#Hoare_partition_scheme</a></li>
+			<li>פונט אָלֶף: <a href="http://alef.hagilda.com" target="_blank">http://alef.hagilda.com</a> ,<a href="https://fonts.google.com/specimen/Alef" target="_blank">https://fonts.google.com/specimen/Alef</a></li>
+			<li>כפתורים: <a href="http://girliemac.com/blog/2009/04/30/css3-gradients-no-image-aqua-button" target="_blank">http://girliemac.com/blog/2009/04/30/css3-gradients-no-image-aqua-button</a></li>
+			<li>אנימציית החלפה בין שני תאים: <a href="http://phrogz.net/SVG/animation_on_a_curve.html" target="_blank">http://phrogz.net/SVG/animation_on_a_curve.html</a></li>
+		</ul>
+	</div>
+	<div id="labelOriginal" class="displayNone">
+		<br/>
+		<span><b>המערך המקורי</b></span>
+		<br/>
+		<span id="arrOriginal" class="arrContainer"></span>
+	</div>
+	<div id="labelBubble" class="displayNone">
+		<br/><br/>
+		<span><b>מיון בועות/החלפה</b></span>
+		<br/>
+		<span>השוואות: </span>
+		<span id="compBubble"></span>
+		<br/>
+		<span>החלפות: </span>
+		<span id="swapBubble"></span>
+		<br/>
+		<span id="endBubble" class="displayNone">
+			<span class="sortedArray">&#10004;</span> <span>המערך ממוין</span>
+		</span>
+		<br/>
+		<span id="arrBubble" class="arrContainer"></span>
+	</div>
+	<div id="labelSelection" class="displayNone">
+		<br/><br/>
+		<span><b>מיון בחירה</b></span>
+		<br/>
+		<span>השוואות: </span>
+		<span id="compSelection"></span>
+		<br/>
+		<span>החלפות: </span>
+		<span id="swapSelection"></span>
+		<br/>
+		<span id="endSelection" class="displayNone">
+			<span class="sortedArray">&#10004;</span> <span>המערך ממוין</span>
+		</span>
+		<br/>
+		<span id="arrSelection" class="arrContainer"></span>
+	</div>
+	<div id="labelInsertion" class="displayNone">
+		<br/><br/>
+		<span><b>מיון הכנסה</b></span>
+		<br/>
+		<span>השוואות: </span>
+		<span id="compInsertion"></span>
+		<br/>
+		<span>החלפות: </span>
+		<span id="swapInsertion"></span>
+		<br/>
+		<span id="endInsertion" class="displayNone">
+			<span class="sortedArray">&#10004;</span> <span>המערך ממוין</span>
+		</span>
+		<br/>
+		<span id="arrInsertion" class="arrContainer"></span>
+	</div>
+	<div id="labelMerge" class="displayNone">
+		<br/><br/>
+		<span><b>מיון מיזוג</b></span>
+		<br/>
+		<span>השוואות: </span>
+		<span id="compMerge"></span>
+		<br/>
+		<span>החלפות: </span>
+		<span id="swapMerge"></span>
+		<br/>
+		<span id="endMerge" class="displayNone">
+			<span class="sortedArray">&#10004;</span> <span>המערך ממוין</span>
+		</span>
+		<br/>
+		<span id="arrMerge" class="arrContainer"></span>
+	</div>
+	<div id="labelQuick" class="displayNone">
+		<br/><br/>
+		<span><b>מיון מהיר</b></span>
+		<br/>
+		<span>השוואות: </span>
+		<span id="compQuick"></span>
+		<br/>
+		<span>החלפות: </span>
+		<span id="swapQuick"></span>
+		<br/>
+		<span id="endQuick" class="displayNone">
+			<span class="sortedArray">&#10004;</span> <span>המערך ממוין</span>
+		</span>
+		<br/>
+		<span id="arrQuick" class="arrContainer"></span>
+	</div>
+	<br/><br/>
+	<a href="http://validator.w3.org/check?uri=referer">
+	<img src="https://www.w3.org/html/logo/badge/html5-badge-h-css3-semantics.png" width="165" height="64" alt="HTML5 Powered with CSS3 / Styling, and Semantics" title="HTML5 Powered with CSS3 / Styling, and Semantics" class="HTML5VALID"/></a>
+	<br/>
+	<a href="http://validator.w3.org/check?uri=referer">
+	<img src="https://www.w3.org/Icons/valid-css-blue" alt="Valid CSS!" height="31" width="88" class="CSSVALID"/></a>
+</body>
+
+</html>
